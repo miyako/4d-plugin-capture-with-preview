@@ -52,12 +52,13 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 385300611;
-			PBXWorkspaceStateSaveDate = 385300611;
+			PBXPerProjectTemplateStateSaveDate = 407061325;
+			PBXWorkspaceStateSaveDate = 407061325;
 		};
 		perUserProjectItems = {
-			D171AF1316F7388A00B38054 /* PBXTextBookmark */ = D171AF1316F7388A00B38054 /* PBXTextBookmark */;
-			D17F639D16E61B0600612728 /* PBXTextBookmark */ = D17F639D16E61B0600612728 /* PBXTextBookmark */;
+			D13A2ABB1843440500E722A3 /* PBXTextBookmark */ = D13A2ABB1843440500E722A3 /* PBXTextBookmark */;
+			D13A2ABC1843440500E722A3 /* PBXTextBookmark */ = D13A2ABC1843440500E722A3 /* PBXTextBookmark */;
+			D13A2ABE1843440500E722A3 /* PBXTextBookmark */ = D13A2ABE1843440500E722A3 /* PBXTextBookmark */;
 		};
 		sourceControlManager = D17F638316E61A2600612728 /* Source Control */;
 		userBuildSettings = {
@@ -79,15 +80,50 @@
 			sepNavWindowFrame = "{{38, 82}, {1052, 770}}";
 		};
 	};
-	D171AF1316F7388A00B38054 /* PBXTextBookmark */ = {
+	D13A2ABB1843440500E722A3 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = D17F638516E61A3000612728 /* 4DPlugin.m */;
 		name = "4DPlugin.m: 1";
 		rLen = 0;
 		rLoc = 0;
 		rType = 0;
-		vrLen = 456;
+		vrLen = 424;
 		vrLoc = 0;
+	};
+	D13A2ABC1843440500E722A3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D13A2ABD1843440500E722A3 /* qedit.h */;
+		rLen = 0;
+		rLoc = 9223372036854775807;
+		rType = 0;
+	};
+	D13A2ABD1843440500E722A3 /* qedit.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = qedit.h;
+		path = "/Users/miyako/github-miyako/4d-plugin-capture-with-preview/Capture/qedit.h";
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {838, 1170}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{2065, 664}";
+		};
+	};
+	D13A2ABE1843440500E722A3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D13A2ABF1843440500E722A3 /* qedit.h */;
+		name = "qedit.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 664;
+		vrLoc = 2065;
+	};
+	D13A2ABF1843440500E722A3 /* qedit.h */ = {
+		isa = PBXFileReference;
+		name = qedit.h;
+		path = "/Users/miyako/github-miyako/4d-plugin-capture-with-preview/Capture/qedit.h";
+		sourceTree = "<absolute>";
 	};
 	D17F638316E61A2600612728 /* Source Control */ = {
 		isa = PBXSourceControlManager;
@@ -105,19 +141,9 @@
 	};
 	D17F638516E61A3000612728 /* 4DPlugin.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {607, 2886}}";
+			sepNavIntBoundsRect = "{{0, 0}, {607, 3003}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 456}";
+			sepNavVisRange = "{0, 424}";
 		};
-	};
-	D17F639D16E61B0600612728 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = D17F638516E61A3000612728 /* 4DPlugin.m */;
-		name = "4DPlugin.m: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 456;
-		vrLoc = 0;
 	};
 }
