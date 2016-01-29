@@ -7,7 +7,7 @@ Take a picture from a camera device on Windows.
 
 | carbon | cocoa | win32 | win64 |
 |:------:|:-----:|:---------:|:---------:|
-|🆗|🚫|🚫|🚫|
+|🚫|🚫|🆗|🆗|
 
 Commands
 ---
