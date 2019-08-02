@@ -1,0 +1,61 @@
+{
+    "name": "Capture",
+    "id": 20000,
+    "commands": [
+        {
+            "theme": "Device",
+            "syntax": "CAPTURE DEVICE Get default:T",
+            "threadSafe": true
+        },
+        {
+            "theme": "Device",
+            "syntax": "CAPTURE DEVICE LIST(&Y)",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW SET RECT(&L;&L;&L;&L;&L)",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW SNAP(&L;&P)",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW CLEAR(&L)",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW Get window(&L):L",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW SET WINDOW(&L;&L)",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW Get visible(&L):L",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW SET VISIBLE(&L;&L)",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW Create(&T):L",
+            "threadSafe": true
+        },
+        {
+            "theme": "Preview",
+            "syntax": "CAPTURE PREVIEW GET RECT(&L;&L;&L;&L;&L)",
+            "threadSafe": true
+        }
+    ]
+}

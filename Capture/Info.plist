@@ -7,15 +7,15 @@
 	<key>CFBundleExecutable</key>
 	<string>Capture</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.4D.4DPlugin.miyako.Capture.2</string>
+	<string>com.4D.Capture</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>4DCB</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0</string>
 	<key>CFBundleSignature</key>
 	<string>4D06</string>
-	<key>CFBundleVersion</key>
-	<string>11.5</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 </dict>

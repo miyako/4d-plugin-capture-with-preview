@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<xliff version="1.0" xmlns:d4="http://www.4d.com/d4-ns">
+    <header>
+        <note>Capture</note>
+    </header>
+    <group resname="themes">
+        <trans-unit id="" resname="59300D9876AE49C08DEF5B7CD35BC5B3" translate="no">
+            <source>Capture</source>
+        </trans-unit>
+    </group>
+    <group restype="x-4DK#" d4:groupName="59300D9876AE49C08DEF5B7CD35BC5B3">
+    </group>
+</xliff>
