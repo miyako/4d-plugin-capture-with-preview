@@ -3,28 +3,15 @@
 
 Take a picture from a camera device on Windows.
 
-##Platform
+### Platform
 
 | carbon | cocoa | win32 | win64 |
 |:------:|:-----:|:---------:|:---------:|
-|🚫|🚫|🆗|🆗|
+|||<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" /> |<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />
 
-Commands
----
+### Version
 
-```c
-// --- Device
-CAPTURE_DEVICE_Get_default
-CAPTURE_DEVICE_LIST
+<img src="https://user-images.githubusercontent.com/1725068/41266195-ddf767b2-6e30-11e8-9d6b-2adf6a9f57a5.png" width="32" height="32" />
 
-// --- Preview
-CAPTURE_PREVIEW_SET_RECT
-CAPTURE_PREVIEW_SNAP
-CAPTURE_PREVIEW_CLEAR
-CAPTURE_PREVIEW_Get_window
-CAPTURE_PREVIEW_SET_WINDOW
-CAPTURE_PREVIEW_Get_visible
-CAPTURE_PREVIEW_SET_VISIBLE
-CAPTURE_PREVIEW_Create
-CAPTURE_PREVIEW_GET_RECT
-```
+### Syntax
+
