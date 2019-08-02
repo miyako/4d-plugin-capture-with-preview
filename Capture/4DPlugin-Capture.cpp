@@ -10,9 +10,9 @@
 
 #include "4DPlugin-Capture.h"
 
-BOOL capture_isComReady = FALSE;
-
 #if VERSIONWIN
+
+BOOL capture_isComReady = FALSE;
 HWND windowRefMdi = NULL;
 
 void OnExit() {
@@ -63,17 +63,18 @@ void OnStartup() {
 #pragma mark -
 
 void PluginMain(PA_long32 selector, PA_PluginParameters params) {
-    
+
+#if VERSIONWIN
 	try
 	{
         switch(selector)
         {
-#if VERSIONWIN
+
             case kInitPlugin :
             case kServerInitPlugin :
                 OnStartup();
                 break;
-#endif
+
 			case kDeinitPlugin:
 			case kServerDeinitPlugin:
 				OnExit();
@@ -121,26 +122,27 @@ void PluginMain(PA_long32 selector, PA_PluginParameters params) {
 	{
 
 	}
+#endif
 }
 
 #pragma mark -
 
+#if VERSIONWIN
+
 typedef struct {
-	IVideoWindow	*videoWindow;
-	IMediaControl	*mediaControl;
-	IGraphBuilder	*graphBuilder;
-	IBaseFilter		*deviceFilter;
-	IBaseFilter		*grabberFilter;
-	ISampleGrabber	*sampleGrabber;
-	PA_long32		windowRef;
+    IVideoWindow    *videoWindow;
+    IMediaControl    *mediaControl;
+    IGraphBuilder    *graphBuilder;
+    IBaseFilter        *deviceFilter;
+    IBaseFilter        *grabberFilter;
+    ISampleGrabber    *sampleGrabber;
+    PA_long32        windowRef;
 }captureContext;
 
 std::map<PA_long32, captureContext*> capture_previews;
 std::map<PA_long32, CUTF16String> capture_devices;
 
 std::mutex globalMutex;
-
-#if VERSIONWIN
 
 captureContext *capture_contextGet(PA_long32 i) {
 

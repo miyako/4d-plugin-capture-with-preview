@@ -20,10 +20,9 @@
 #include "Shlwapi.h" //PathRemoveFileSpec
 #pragma comment(lib, "strmiids")
 #pragma comment(lib, "shlwapi")
-#endif
-
 #include "ARRAY_TEXT.h"
 #include "C_TEXT.h"
+#endif
 
 #include <map>
 #include <mutex>
