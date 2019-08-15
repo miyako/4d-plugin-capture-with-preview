@@ -15,3 +15,4 @@ Take a picture from a camera device on Windows.
 
 ### Syntax
 
+[miyako.github.io](2019-08-15-4d-plugin-capture-with-preview.md)
