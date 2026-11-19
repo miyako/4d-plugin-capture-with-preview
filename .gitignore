@@ -1,0 +1,9 @@
+.DS_Store
+build/
+Capture.vcxproj.user
+test/Data/
+test/Logs/
+test/userPreferences.*
+test/Project/DerivedData/
+test/Plugins/Capture.bundle/Contents/MacOS/
+test/Plugins/Capture.bundle/Contents/_CodeSignature/
