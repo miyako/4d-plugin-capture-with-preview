@@ -233,7 +233,7 @@ IBaseFilter *capture_getDeviceForName(C_TEXT &name)
 						description = (const PA_Unichar *)var.bstrVal;
 						VariantClear(&var);
 
-						if (n.compare(description) == 0)
+						if (n.compare(description) == 0 && pBFilter == NULL)
 						{
 							hr = pMoniker->BindToObject(0, 0, IID_IBaseFilter, (void **)&pBFilter);
 						}
@@ -244,6 +244,10 @@ IBaseFilter *capture_getDeviceForName(C_TEXT &name)
 					pMoniker->Release();
 				}
 
+			}
+			if (pEnum)
+			{
+				pEnum->Release();
 			}
 			pDevEnum->Release();
 		}
@@ -279,96 +283,120 @@ captureContext *capture_contextCreate(C_TEXT &device, PA_long32 *preview) {
 			if (pDeviceFilter)
 			{
 				IGraphBuilder *pGraph = NULL;
+				ICaptureGraphBuilder2 *pCapture = NULL;
+				IBaseFilter *pGrabberFilter = NULL;
+				ISampleGrabber *pGrabber = NULL;
+				IMediaControl *pMControl = NULL;
+				IVideoWindow *pVWindow = NULL;
+
 				HRESULT hr = CoCreateInstance(CLSID_FilterGraph, NULL,
 					CLSCTX_INPROC_SERVER,
 					IID_IGraphBuilder,
 					(void **)&pGraph);
+
 				if (SUCCEEDED(hr)) {
-					ICaptureGraphBuilder2 *pCapture = NULL;
 					hr = CoCreateInstance(CLSID_CaptureGraphBuilder2,
 						NULL,
 						CLSCTX_INPROC_SERVER,
 						IID_ICaptureGraphBuilder2,
 						(void**)&pCapture);
+				}
 
-					if (SUCCEEDED(hr)) {
-						IBaseFilter *pGrabberFilter = NULL;
-						hr = CoCreateInstance(CLSID_SampleGrabber,
-							NULL,
-							CLSCTX_INPROC_SERVER,
-							IID_PPV_ARGS(&pGrabberFilter));
-						if (SUCCEEDED(hr)) {
-							ISampleGrabber *pGrabber = NULL;
-							hr = pGrabberFilter->QueryInterface(IID_ISampleGrabber, (void **)&pGrabber);
-							if (SUCCEEDED(hr)) {
-								//Set the Media Type
-								AM_MEDIA_TYPE mt;
-								ZeroMemory(&mt, sizeof(mt));
-								mt.majortype = MEDIATYPE_Video;
-								mt.subtype = MEDIASUBTYPE_RGB24;
-								mt.formattype = FORMAT_VideoInfo;
-								hr = pGrabber->SetMediaType(&mt);
-								if (SUCCEEDED(hr)) {
-									hr = pGraph->AddFilter(pGrabberFilter, L"Sample Grabber");
-									if (SUCCEEDED(hr)) {
-										hr = pCapture->SetFiltergraph(pGraph);
-										if (SUCCEEDED(hr)) {
-											IMediaControl *pMControl = NULL;
-											hr = pGraph->QueryInterface(IID_IMediaControl, (void **)&pMControl);
-											if (SUCCEEDED(hr)) {
-												hr = pGraph->AddFilter(pDeviceFilter, L"Device Filter");
-												if (SUCCEEDED(hr)) {
-													hr = pCapture->RenderStream(&PIN_CATEGORY_PREVIEW,
-														NULL,
-														pDeviceFilter,
-														pGrabberFilter,
-														NULL);
-													if (SUCCEEDED(hr)) {
-														IVideoWindow *pVWindow = NULL;
-														hr = pGraph->QueryInterface(IID_IVideoWindow, (void **)&pVWindow);
-														if (SUCCEEDED(hr)) {
+				if (SUCCEEDED(hr)) {
+					hr = CoCreateInstance(CLSID_SampleGrabber,
+						NULL,
+						CLSCTX_INPROC_SERVER,
+						IID_PPV_ARGS(&pGrabberFilter));
+				}
 
-															pVWindow->put_Visible(OAFALSE);
-															pVWindow->put_AutoShow(OAFALSE);
-															pVWindow->SetWindowPosition(0, 0, 0, 0);
-															pVWindow->HideCursor(OAFALSE);
-															pVWindow->put_WindowStyle(WS_CHILD | WS_CLIPCHILDREN);
+				if (SUCCEEDED(hr)) {
+					hr = pGrabberFilter->QueryInterface(IID_ISampleGrabber, (void **)&pGrabber);
+				}
 
-															unsigned int i = 1;
+				if (SUCCEEDED(hr)) {
+					//Set the Media Type
+					AM_MEDIA_TYPE mt;
+					ZeroMemory(&mt, sizeof(mt));
+					mt.majortype = MEDIATYPE_Video;
+					mt.subtype = MEDIASUBTYPE_RGB24;
+					mt.formattype = FORMAT_VideoInfo;
+					hr = pGrabber->SetMediaType(&mt);
+				}
 
-															while (capture_previews.find(i) != capture_previews.end()) {
-																i++;
-															}
+				if (SUCCEEDED(hr)) {
+					hr = pGraph->AddFilter(pGrabberFilter, L"Sample Grabber");
+				}
 
-															context = new(captureContext);
+				if (SUCCEEDED(hr)) {
+					hr = pCapture->SetFiltergraph(pGraph);
+				}
 
-															context->mediaControl = pMControl;
-															context->videoWindow = pVWindow;
-															context->graphBuilder = pGraph;
-															context->deviceFilter = pDeviceFilter;
-															context->grabberFilter = pGrabberFilter;
-															context->sampleGrabber = pGrabber;
+				if (SUCCEEDED(hr)) {
+					hr = pGraph->QueryInterface(IID_IMediaControl, (void **)&pMControl);
+				}
 
-															capture_previews.insert(std::map<PA_long32, captureContext*>::value_type(i, context));
-															capture_devices.insert(std::map<PA_long32, CUTF16String>::value_type(i, deviceName));
+				if (SUCCEEDED(hr)) {
+					hr = pGraph->AddFilter(pDeviceFilter, L"Device Filter");
+				}
 
-															*preview = i;
+				if (SUCCEEDED(hr)) {
+					hr = pCapture->RenderStream(&PIN_CATEGORY_PREVIEW,
+						NULL,
+						pDeviceFilter,
+						pGrabberFilter,
+						NULL);
+				}
 
-															context->mediaControl->Pause();
-															context->sampleGrabber->SetBufferSamples(FALSE);
+				if (SUCCEEDED(hr)) {
+					hr = pGraph->QueryInterface(IID_IVideoWindow, (void **)&pVWindow);
+				}
 
-														}//pVWindow
-													}//RenderStream
-												}//AddFilter
-											}//pMControl
-										}//SetFiltergraph
-									}//AddFilter
-								}//SetMediaType
-							}//pGrabber
-						}//pGrabberFilter
-						pCapture->Release();
-					}//pCapture
-				}//pGraph
+				if (SUCCEEDED(hr)) {
+
+					pVWindow->put_Visible(OAFALSE);
+					pVWindow->put_AutoShow(OAFALSE);
+					pVWindow->SetWindowPosition(0, 0, 0, 0);
+					pVWindow->HideCursor(OAFALSE);
+					pVWindow->put_WindowStyle(WS_CHILD | WS_CLIPCHILDREN);
+
+					unsigned int i = 1;
+
+					while (capture_previews.find(i) != capture_previews.end()) {
+						i++;
+					}
+
+					context = new(captureContext);
+
+					context->mediaControl = pMControl;
+					context->videoWindow = pVWindow;
+					context->graphBuilder = pGraph;
+					context->deviceFilter = pDeviceFilter;
+					context->grabberFilter = pGrabberFilter;
+					context->sampleGrabber = pGrabber;
+
+					capture_previews.insert(std::map<PA_long32, captureContext*>::value_type(i, context));
+					capture_devices.insert(std::map<PA_long32, CUTF16String>::value_type(i, deviceName));
+
+					*preview = i;
+
+					context->mediaControl->Pause();
+					context->sampleGrabber->SetBufferSamples(FALSE);
+
+				}
+				else {
+					//release every interface acquired on the failure path
+					if (pVWindow) pVWindow->Release();
+					if (pMControl) pMControl->Release();
+					if (pGrabber) pGrabber->Release();
+					if (pGrabberFilter) pGrabberFilter->Release();
+					if (pGraph) pGraph->Release();
+					pDeviceFilter->Release();
+				}
+
+				if (pCapture)
+				{
+					pCapture->Release();
+				}
 			}//pDeviceFilter
 		}
 	}
@@ -426,6 +454,10 @@ void capture_getDevicesList(ARRAY_TEXT &names)
 					pMoniker->Release();
 				}
 
+			}
+			if (pEnum)
+			{
+				pEnum->Release();
 			}
 			pDevEnum->Release();
 		}
@@ -537,10 +569,14 @@ void capture_setWindow(PA_long32 paramPreview, PA_long32 paramWindow)
 {
 	PA_WindowRef window = reinterpret_cast<PA_WindowRef>(paramWindow);
 
-	HWND windowRef = (HWND)PA_GetHWND(window);
+	HWND windowRef = NULL;
 	if (!window)
 	{
 		windowRef = windowRefMdi;
+	}
+	else
+	{
+		windowRef = (HWND)PA_GetHWND(window);
 	}
 
 	captureContext *context = capture_contextGet(paramPreview);
@@ -629,25 +665,35 @@ void CAPTURE_PREVIEW_SNAP(PA_PluginParameters params) {
 
 		VIDEOINFOHEADER *pVideoInfoHeader = (VIDEOINFOHEADER *)am_media_type.pbFormat;
 
-		long size = am_media_type.lSampleSize;
-		std::vector<uint8_t> buf(size);
+		long size = 0;
+		pSampleGrabber->GetCurrentBuffer(&size, NULL);
 
-		pSampleGrabber->GetCurrentBuffer(&size, (long *)&buf[0]);
+		if (size > 0) {
+			std::vector<uint8_t> buf(size);
 
-		BITMAPFILEHEADER bmphdr;
-		memset(&bmphdr, 0, sizeof(bmphdr));
-		bmphdr.bfType = ('M' << 8) | 'B';
-		bmphdr.bfSize = sizeof(bmphdr) + sizeof(BITMAPINFOHEADER) + size;
-		bmphdr.bfOffBits = sizeof(bmphdr) + sizeof(BITMAPINFOHEADER);
+			pSampleGrabber->GetCurrentBuffer(&size, (long *)&buf[0]);
 
-		std::vector<uint8_t> bytes(sizeof(bmphdr) + sizeof(BITMAPINFOHEADER) + size);
-		memmove((char *)&bytes[0], &bmphdr, sizeof(bmphdr));
-		memmove((char *)&bytes[sizeof(bmphdr)], &pVideoInfoHeader->bmiHeader, sizeof(BITMAPINFOHEADER));
-		memmove((char *)&bytes[sizeof(bmphdr) + sizeof(BITMAPINFOHEADER)], &buf[0], size);
+			BITMAPFILEHEADER bmphdr;
+			memset(&bmphdr, 0, sizeof(bmphdr));
+			bmphdr.bfType = ('M' << 8) | 'B';
+			bmphdr.bfSize = sizeof(bmphdr) + sizeof(BITMAPINFOHEADER) + size;
+			bmphdr.bfOffBits = sizeof(bmphdr) + sizeof(BITMAPINFOHEADER);
 
-		PA_Picture p;
-		p = PA_CreatePicture(&bytes[0], bytes.size());
-		PA_SetPictureParameter(params, 2, p);
+			std::vector<uint8_t> bytes(sizeof(bmphdr) + sizeof(BITMAPINFOHEADER) + size);
+			memmove((char *)&bytes[0], &bmphdr, sizeof(bmphdr));
+			memmove((char *)&bytes[sizeof(bmphdr)], &pVideoInfoHeader->bmiHeader, sizeof(BITMAPINFOHEADER));
+			memmove((char *)&bytes[sizeof(bmphdr) + sizeof(BITMAPINFOHEADER)], &buf[0], size);
+
+			PA_Picture p;
+			p = PA_CreatePicture(&bytes[0], bytes.size());
+			PA_SetPictureParameter(params, 2, p);
+		}
+
+		if (am_media_type.pbFormat)
+		{
+			CoTaskMemFree(am_media_type.pbFormat);
+			am_media_type.pbFormat = NULL;
+		}
 	}
 
 
@@ -663,11 +709,9 @@ void CAPTURE_PREVIEW_CLEAR(PA_PluginParameters params) {
 void CAPTURE_PREVIEW_Get_visible(PA_PluginParameters params) {
 
 	PA_long32 c = PA_GetLongParameter(params, 1);
-	PA_long32 v;
+	PA_long32 v = 0;
 
 	capture_getVisible(c, &v);
-
-	capture_contextGet(c);
 
 	PA_ReturnLong(params, v);
 }
@@ -683,7 +727,7 @@ void CAPTURE_PREVIEW_SET_VISIBLE(PA_PluginParameters params) {
 void CAPTURE_PREVIEW_Create(PA_PluginParameters params) {
 
 	C_TEXT paramDevice;
-	PA_long32 c;
+	PA_long32 c = 0;
 
 	paramDevice.setUTF16String(PA_GetStringParameter(params, 1));
 	capture_contextCreate(paramDevice, &c);
